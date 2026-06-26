@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Kitchen — Nigerian Cuisine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:  #1A2E1A;
+      --ivory:   #F7F0E3;
+      --amber:   #C8721A;
+      --sage:    #4A6741;
+      --mist:    #E8DFD0;
+      --type-xl: clamp(3.2rem, 8vw, 7.5rem);
+      --type-lg: clamp(2rem, 4.5vw, 3.5rem);
+      --type-md: clamp(1.1rem, 2vw, 1.35rem);
+      --type-sm: 0.9rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--forest);
+      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 5vw;
+      mix-blend-mode: normal;
+    }
+    nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(26,46,26,0.9) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      color: var(--ivory);
+      text-decoration: none;
+      position: relative;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      position: relative;
+    }
+    .nav-links a {
+      color: var(--mist);
+      text-decoration: none;
+      font-size: var(--type-sm);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 5vw 8vh;
+      position: relative;
+      overflow: hidden;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse 80% 70% at 60% 40%, #2E5430 0%, var(--forest) 70%);
+    }
+
+    /* decorative large O */
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 6vw;
+      transform: translateY(-50%);
+      width: clamp(280px, 40vw, 560px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(200,114,26,0.18);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 6vw;
+      transform: translateY(-50%);
+      width: clamp(200px, 29vw, 420px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(200,114,26,0.1);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: var(--type-sm);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.2s forwards;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: var(--type-xl);
+      font-weight: 400;
+      line-height: 1.0;
+      max-width: 14ch;
+      opacity: 0;
+      animation: fadeUp 1s 0.45s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .hero-sub {
+      margin-top: 2rem;
+      max-width: 44ch;
+      color: var(--mist);
+      font-size: var(--type-md);
+      opacity: 0;
+      animation: fadeUp 1s 0.7s forwards;
+    }
+    .hero-actions {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+    }
+    .btn-primary {
+      background: var(--amber);
+      color: var(--forest);
+      padding: 0.85rem 2.2rem;
+      text-decoration: none;
+      font-size: var(--type-sm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: #e0841f; transform: translateY(-1px); }
+    .btn-ghost {
+      border: 1px solid rgba(247,240,227,0.4);
+      color: var(--ivory);
+      padding: 0.85rem 2.2rem;
+      text-decoration: none;
+      font-size: var(--type-sm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--ivory); color: var(--ivory); }
+
+    /* ── PHILOSOPHY ── */
+    #philosophy {
+      padding: clamp(5rem, 12vw, 10rem) 5vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem 8vw;
+      align-items: start;
+      border-top: 1px solid rgba(247,240,227,0.1);
+    }
+    .phil-label {
+      font-size: var(--type-sm);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.4rem;
+    }
+    .phil-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      line-height: 1.15;
+    }
+    .phil-heading em { font-style: italic; color: var(--sage); filter: brightness(1.5); }
+    .phil-body {
+      color: var(--mist);
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+    .phil-body p + p { margin-top: 1.2em; }
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--amber);
+      margin-bottom: 1.8rem;
+    }
+
+    /* ── MENU HIGHLIGHT ── */
+    #menu {
+      padding: clamp(4rem, 10vw, 8rem) 5vw;
+      background: rgba(0,0,0,0.15);
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid rgba(247,240,227,0.1);
+      padding-bottom: 1.5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 400;
+    }
+    .section-link {
+      color: var(--amber);
+      text-decoration: none;
+      font-size: var(--type-sm);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .section-link:hover { opacity: 0.7; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background: rgba(247,240,227,0.06);
+    }
+    .menu-item {
+      background: var(--forest);
+      padding: 2.2rem 2rem;
+      transition: background 0.25s;
+    }
+    .menu-item:hover { background: #1e3620; }
+    .menu-item-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.8rem;
+    }
+    .menu-item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+    }
+    .menu-item-desc {
+      color: var(--mist);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-bottom: 1.4rem;
+    }
+    .menu-item-price {
+      font-size: 0.95rem;
+      color: var(--ivory);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      padding: clamp(5rem, 12vw, 10rem) 5vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem 8vw;
+      align-items: center;
+    }
+    .exp-visual {
+      position: relative;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #2a4a2a 0%, #1a3020 50%, #0f1f10 100%);
+      overflow: hidden;
+    }
+    /* decorative element inside visual */
+    .exp-visual::before {
+      content: 'The Kitchen';
+      position: absolute;
+      bottom: 2rem; left: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: rgba(247,240,227,0.25);
+      letter-spacing: 0.08em;
+    }
+    .exp-visual-inner {
+      position: absolute;
+      inset: 2rem;
+      border: 1px solid rgba(200,114,26,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .exp-visual-symbol {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(5rem, 10vw, 9rem);
+      color: rgba(200,114,26,0.12);
+      user-select: none;
+      line-height: 1;
+    }
+    .exp-label {
+      font-size: var(--type-sm);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.4rem;
+    }
+    .exp-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .exp-body {
+      color: var(--mist);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      margin-bottom: 2.5rem;
+    }
+    .stat-row {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mist);
+    }
+
+    /* ── RESERVATIONS ── */
+    #reserve {
+      padding: clamp(4rem, 10vw, 8rem) 5vw;
+      background: var(--ivory);
+      color: var(--forest);
+      text-align: center;
+    }
+    #reserve .section-eyebrow {
+      font-size: var(--type-sm);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    #reserve .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: var(--type-lg);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--forest);
+      max-width: 20ch;
+      margin: 0 auto 1.5rem;
+    }
+    #reserve .section-heading em {
+      font-style: italic;
+      color: var(--sage);
+    }
+    #reserve .reserve-sub {
+      max-width: 50ch;
+      margin: 0 auto 3rem;
+      color: #4a4a3a;
+      font-size: 1.05rem;
+    }
+    .reserve-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      max-width: 720px;
+      margin: 0 auto;
+      justify-content: center;
+    }
+    .reserve-form input, .reserve-form select {
+      flex: 1 1 180px;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid #ccc5b0;
+      background: white;
+      color: var(--forest);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .reserve-form input:focus, .reserve-form select:focus {
+      border-color: var(--amber);
+    }
+    .reserve-form .btn-submit {
+      flex: 1 1 180px;
+      padding: 0.9rem 2rem;
+      background: var(--forest);
+      color: var(--ivory);
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: var(--type-sm);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .reserve-form .btn-submit:hover { background: var(--sage); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: clamp(3rem, 7vw, 5rem) 5vw 2.5rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem 5vw;
+      border-top: 1px solid rgba(247,240,227,0.1);
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .footer-tagline {
+      color: var(--mist);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      max-width: 32ch;
+    }
+    footer h4 {
+      font-size: var(--type-sm);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.2rem;
+    }
+    footer ul { list-style: none; }
+    footer ul li { margin-bottom: 0.55rem; }
+    footer ul a {
+      color: var(--mist);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    footer ul a:hover { color: var(--ivory); }
+    .footer-bottom {
+      grid-column: 1 / -1;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(247,240,227,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: rgba(247,240,227,0.35);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      #philosophy { grid-template-columns: 1fr; gap: 2.5rem; }
+      #experience { grid-template-columns: 1fr; }
+      .exp-visual { aspect-ratio: 3/2; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .footer-brand-col { grid-column: 1 / -1; }
+      .nav-links { gap: 1.2rem; }
+      .stat-row { gap: 1.8rem; }
+      .section-header { flex-direction: column; gap: 0.8rem; }
+    }
+    @media (max-width: 480px) {
+      .nav-links li:not(:last-child) { display: none; }
+      footer { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">The Kitchen</a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Story</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#reserve">Reserve</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">Lagos · Nigerian Cuisine</p>
+    <h1 class="hero-title">Where <em>flavour</em> finds its roots.</h1>
+    <p class="hero-sub">A celebration of Nigerian cooking — bold, slow, and unapologetic. Every dish carries the memory of a kitchen we grew up around.</p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn-primary">Explore the Menu</a>
+      <a href="#reserve" class="btn-ghost">Make a Reservation</a>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section id="philosophy">
+    <div class="reveal">
+      <p class="phil-label">Our Philosophy</p>
+      <h2 class="phil-heading">Cooked with <em>intention.</em><br>Served with pride.</h2>
+    </div>
+    <div class="reveal">
+      <div class="divider"></div>
+      <div class="phil-body">
+        <p>At The Kitchen, we don't reimagine Nigerian cuisine — we honour it. Our recipes are drawn from family archives, market stalls, and the hands of people who never measured anything because they never needed to.</p>
+        <p>We source our peppers, crayfish, and palm oil directly from producers in Anambra, Benue, and Cross River. The food you eat here begins long before it reaches your plate.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="section-header reveal">
+      <h2 class="section-title">Signature Dishes</h2>
+      <a href="#" class="section-link">Full Menu →</a>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item reveal">
+        <p class="menu-item-tag">Soups &amp; Stews</p>
+        <h3 class="menu-item-name">Banga Soup</h3>
+        <p class="menu-item-desc">Palm nut concentrate, goat meat, fresh periwinkles, and dried fish. Served with starch or eba.</p>
+        <p class="menu-item-price">₦8,500</p>
+      </div>
+      <div class="menu-item reveal">
+        <p class="menu-item-tag">Soups &amp; Stews</p>
+        <h3 class="menu-item-name">Egusi Soup</h3>
+        <p class="menu-item-desc">Ground melon seed, bitter leaf, smoked catfish, and assorted meats. A classic done properly.</p>
+        <p class="menu-item-price">₦7,800</p>
+      </div>
+      <div class="menu-item reveal">
+        <p class="menu-item-tag">Rice &amp; Grains</p>
+        <h3 class="menu-item-name">Ofada Rice &amp; Ayamase</h3>
+        <p class="menu-item-desc">Local unpolished Ofada rice with a rich green pepper stew, locust beans, and offal.</p>
+        <p class="menu-item-price">₦9,200</p>
+      </div>
+      <div class="menu-item reveal">
+        <p class="menu-item-tag">Grills</p>
+        <h3 class="menu-item-name">Suya Platter</h3>
+        <p class="menu-item-desc">Thin-sliced spiced beef on skewers, with sliced onion, tomato, and kuli-kuli groundnut cake.</p>
+        <p class="menu-item-price">₦6,500</p>
+      </div>
+      <div class="menu-item reveal">
+        <p class="menu-item-tag">Small Plates</p>
+        <h3 class="menu-item-name">Moi Moi</h3>
+        <p class="menu-item-desc">Steamed bean pudding with boiled egg, fish, and crayfish. Wrapped in banana leaf.</p>
+        <p class="menu-item-price">₦3,200</p>
+      </div>
+      <div class="menu-item reveal">
+        <p class="menu-item-tag">Drinks</p>
+        <h3 class="menu-item-name">Zobo &amp; Chapman</h3>
+        <p class="menu-item-desc">House hibiscus zobo with ginger and cloves, or a classic Nigerian Chapman cocktail.</p>
+        <p class="menu-item-price">₦1,800</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="exp-visual reveal">
+      <div class="exp-visual-inner">
+        <div class="exp-visual-symbol">✦</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="exp-label">The Space</p>
+      <h2 class="exp-heading">A table that feels like home.</h2>
+      <p class="exp-body">The Kitchen seats 40 guests in an intimate setting designed around conversation. Warm wood, exposed terracotta walls, and the aroma of slow-cooking stews create an atmosphere that is equal parts restaurant and living room.</p>
+      <div class="stat-row">
+        <div>
+          <div class="stat-num">40</div>
+          <div class="stat-label">Covers</div>
+        </div>
+        <div>
+          <div class="stat-num">12+</div>
+          <div class="stat-label">Years Open</div>
+        </div>
+        <div>
+          <div class="stat-num">6</div>
+          <div class="stat-label">States Sourced</div>
+        </div>
+      </div>
+      <a href="#reserve" class="btn-primary">Book a Table</a>
+    </div>
+  </section>
+
+  <!-- RESERVATIONS -->
+  <section id="reserve">
+    <p class="section-eyebrow">Reservations</p>
+    <h2 class="section-heading">Join us for a proper <em>Nigerian feast.</em></h2>
+    <p class="reserve-sub">We seat two services per evening — 6:00 PM and 8:30 PM. Walk-ins welcome for lunch.</p>
+    <div class="reserve-form">
+      <input type="text" placeholder="Your name" />
+      <input type="email" placeholder="Email address" />
+      <input type="date" />
+      <select>
+        <option value="">Time</option>
+        <option>6:00 PM</option>
+        <option>8:30 PM</option>
+      </select>
+      <select>
+        <option value="">Guests</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3 – 4</option>
+        <option>5 – 6</option>
+        <option>7+</option>
+      </select>
+      <button class="btn-submit">Request Reservation</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand-col">
+      <div class="footer-brand">The Kitchen</div>
+      <p class="footer-tagline">Nigerian cuisine rooted in tradition, plated with care. Open Tuesday – Sunday.</p>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <ul>
+        <li><a href="#">14 Adeola Odeku Street</a></li>
+        <li><a href="#">Victoria Island, Lagos</a></li>
+        <li><a href="#">+234 810 000 0001</a></li>
+        <li><a href="#">hello@thekitchen.ng</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <ul>
+        <li><a href="#">Lunch: 12pm – 3pm</a></li>
+        <li><a href="#">Dinner: 6pm – 10pm</a></li>
+        <li><a href="#">Closed Mondays</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 The Kitchen. All rights reserved.</span>
+      <span>Made with love in Lagos.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
